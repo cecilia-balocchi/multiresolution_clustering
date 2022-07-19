@@ -1,0 +1,1 @@
+This is where the generated synthetic data from the model (*modeldata*) are saved when running `scripts/modeldata_generate.R`.

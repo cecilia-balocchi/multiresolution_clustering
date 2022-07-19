@@ -1,0 +1,1 @@
+This is where figures are saved when running `scripts/modeldata_plot.R`, `scripts/simpledata_plot.R` and `scripts/westphilly_plot.R`.
