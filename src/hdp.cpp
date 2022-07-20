@@ -378,7 +378,7 @@ void Hdp::Change_Rest(proposal_info* info, double eta_CT, double eta_TD, double 
   }
 
   std::vector<int> nObsRest_orig(nObsRest);
-  std::vector<int> nTableRest_orig(nTableRest); // TODO: not used?
+  std::vector<int> nTableRest_orig(nTableRest); // not used?
 
   /* ~~~ update nObsRest ~~~ */ 
 

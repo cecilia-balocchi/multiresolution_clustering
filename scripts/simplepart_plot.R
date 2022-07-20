@@ -118,7 +118,6 @@ boxplot(tmp_data_n10$VI_HR ~ tmp_data_n10$model, main = expression(paste("VI ",g
 boxplot(tmp_data_n10$RMSE_Gjs ~ tmp_data_n10$model, main = expression("RMSE G"[j]))
 boxplot(tmp_data_n10$VI_LR ~ tmp_data_n10$model, main = expression(paste("VI ",gamma^L)))
 
-par()
 boxplot(tmp_data_n50$RMSE ~ tmp_data_n50$model)#, main = expression(paste("RMSE ",theta[jk])))
 boxplot(tmp_data_n50$VI_HR ~ tmp_data_n50$model)#, main = expression(paste("VI ",gamma^H)))
 boxplot(tmp_data_n50$RMSE_Gjs ~ tmp_data_n50$model)#, main = expression("RMSE G"[j]))

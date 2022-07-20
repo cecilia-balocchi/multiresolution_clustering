@@ -20,10 +20,6 @@ non_mcmc_models <- 2
 m <- 10
 resultsHR <- get(paste0("resultsHR_m",m,"_d",d,"sim",config))
 resultsLR <- get(paste0("resultsLR_m",m,"_d",d,"sim",config))
-## TODO check
-if((config == "111") & (m == 10)){
-  resultsHR[,,5] <- NA
-}
 
 tmp_data <- data.frame(model = NULL, 
                        R2 = NULL, RMSE = NULL, VI_HR = NULL,
@@ -123,7 +119,6 @@ boxplot(tmp_data_n10$VI_HR ~ tmp_data_n10$model, main = expression(paste("VI ",g
 boxplot(tmp_data_n10$RMSE_Gjs ~ tmp_data_n10$model, main = expression("RMSE G"[j]))
 boxplot(tmp_data_n10$VI_LR ~ tmp_data_n10$model, main = expression(paste("VI ",gamma^L)))
 
-par()
 boxplot(tmp_data_n50$RMSE ~ tmp_data_n50$model)#, main = expression(paste("RMSE ",theta[jk])))
 boxplot(tmp_data_n50$VI_HR ~ tmp_data_n50$model)#, main = expression(paste("VI ",gamma^H)))
 boxplot(tmp_data_n50$RMSE_Gjs ~ tmp_data_n50$model)#, main = expression("RMSE G"[j]))

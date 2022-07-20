@@ -867,10 +867,6 @@ bool Multires::SampleNew_LR(double temp, std::default_random_engine& eng, double
 void Multires::ProposalNew_LR(double& lqratio, double& lpratio, double& llikratio, proposal_info* info, std::default_random_engine& myRandomEngine, double eta_LR, double eta_CT, double eta_TD, bool local_print){
   /*
   ProposalNew_LR first picks one LR unit, samples the new cluster assignment.
-  TODO2: should I sample j in the range of the indices or of "indexing"? ie. is it possible that my algorithm shuffles things in a way that I would not sample uniformly if I used j? 
-  NOTE[?] if it was a singleton, kLR_new will not be equal to kLR_old (pr = 0)
-  TODO: check all initializations within loops
-  TODO check (with notes) that you are considering all the cases and computing all probabilities.
   */
   double lpr_q = 0.0;         // log probability of the proposed change
   double lpr_q_inv = 0.0;     // log probability of the inverse move
@@ -883,7 +879,7 @@ void Multires::ProposalNew_LR(double& lqratio, double& lpratio, double& llikrati
 
   // Now we sample the new proposed cluster assignment of j
   std::vector<double> pr(lowresPart->K + 1);
-  for(int k = 0; k < lowresPart->K; k++){ // TODO2: check if it's okay that one pr = 0
+  for(int k = 0; k < lowresPart->K; k++){ 
     pr[k] = lowresPart->cluster_config[k]/(lowresPart->nObs-1 + eta_LR);
   }
   int kLR_old = lowresPart->cluster_assignment[j];

@@ -63,6 +63,6 @@ Finally, with `modeldata_plot.R` we produce the plots reported in the paper usin
 
 ### Data analysis of crime density in West Philadelphia
 
-The data (crime density in West Philadelphia) was cleaned and compiled in ... **TODO**
+The data (crime density in West Philadelphia) was cleaned and compiled in `get_data/` (see `get_data/readme.md` for detailed instructions). For convenience, the final aggregated datasets are already provided in the `data` folder.
 
 The analysis of the data was run using `scripts/westphilly_analysis.R` and the results were compiled and plotted using `scripts/westphilly_plot.R`.
