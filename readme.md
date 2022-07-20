@@ -49,7 +49,7 @@ The Synthetic Data Evaluation is composed by two parts:
 
 The script `simplepart_simulation.R` will actually run the simulation, generating the data and comparing several methods. See `scripts/readme.md` for further details on how to replicate the simulation reported in the paper.
 
-Using the script `simpledata_compile.R` we combined the output and results from all these simulation configurations, and saved the produced summaries in `results/summaries`.
+Using the script `simplepart_compile.R` we combined the output and results from all these simulation configurations, and saved the produced summaries in `results/summaries`.
 
 Finally, with `simplepart_plot.R` we produce the plots reported in the paper using the saved summaries.
 

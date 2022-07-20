@@ -13,15 +13,17 @@ source("R/nDP.R")
 # This script was run on a high performance cluster, 
 # with the script being called from a command line script, including the line
 # `R --no-save --args arg1 arg2 arg3 < scripts/simplePart_all.R`
-# where the vector (arg1, arg2, arg3) is passed in the following as `new_args`.
+# where the vector (arg1, arg2, arg3, arg4) is passed in the following as `new_args`.
 # The first argument determines the simulation number and method
 # the second fixes the number of HR units within LR ones, 
-# the third determines the distance between clusters. 
-# If running the simulation from RStudio, you can fix the values of the second and third arguments
+# the third determines the distance between clusters,
+# the fourth determines the number of low resolution units. 
+# If running the simulation from RStudio, you can fix the values of the second, third and fourth arguments
 # and have the first component range for the desired simulations and methods.
 
 # In the reported simulations, the second argument (`opt_m`) was fixed to either 2 or 4,
-# while the third argument (`opt_dist`) was fixed to 2, which is considered a level of moderate cluster separation.
+# the third argument (`opt_dist`) was fixed to 2, which is considered a level of moderate cluster separation,
+# and the fourth argument (`opt_nct`) was fixed to either 1, 2, or 3.
 
 new_args <- commandArgs(TRUE)
 tmp <- as.numeric(new_args[1])
@@ -30,6 +32,7 @@ method <- (tmp-1) %/% 50 + 1
 sim <- as.character(sim_number)
 opt_m <- as.numeric(new_args[2])
 opt_dist <- as.numeric(new_args[3])
+opt_nct <- as.numeric(new_args[4])
 
 cat(sim_number, "\n")
 cat(opt_m, "\n")
@@ -43,7 +46,14 @@ dist <- dists[opt_dist]
 
 ### Generation of hierarchical structure of HR (bg = block groups) and LR (ct = census tracts) units
 
-n_ct = 50                        # number of low-res units
+if(opt_nct == 1){                # number of low-res units
+  n_ct = 10 
+} else if(opt_nct == 2){
+  n_ct = 25
+} else if(opt_nct ==3){
+  n_ct = 50
+}
+
 if(opt_m == 1){                  # number of high-res units in each low-res units
   n_bg_in_ct = 5 
 } else if(opt_m == 2){

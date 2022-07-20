@@ -5,7 +5,7 @@ n_ct = 10
 # n_ct = 25
 # n_ct = 50
 
-tmp <- load(paste0("results/summaries/simpledata3_nct",n_ct,".rdata"))
+tmp <- load(paste0("results/summaries/simplepart_nct",n_ct,".rdata"))
 
 d <- "25"
 Nsim <- 50

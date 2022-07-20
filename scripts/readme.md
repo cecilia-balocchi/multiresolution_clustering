@@ -4,14 +4,14 @@
 
 The script `simplepart_simulation.R` was run on a high performance cluster, from a command line script that provided several parameters determining the configuration for the simulation analysis. Specifically, it was run using the line
 ``` 
-R --no-save --args arg1 arg2 arg3 < scripts/simplepart_simulation.R 
+R --no-save --args arg1 arg2 arg3 arg4 < scripts/simplepart_simulation.R 
 ```
-where the passed parameters determined the method and the data replicate used (`arg1`), the size of the datasets, specifically the number of high resolution units contained in each low resolution unit (`arg2`) and the cluster separation level (`arg3`). 
+where the passed parameters determined the method and the data replicate used (`arg1`), the size of the datasets, specifically the number of high resolution units contained in each low resolution unit (`arg2`), the cluster separation level (`arg3`) and the number of low resolution units (`arg4`). 
 
-In our simulation we fixed the cluster separation to a moderate level (fixing `arg3` to `2`), and we considered the number of units to range between 10, 25 and 50 (respectively fixing `arg2` to `2`, `3` and `4`). Moreover, we considered three methods (the nHDP, the multi-resolution adaptation of k-means, and the nDP) and 50 data replicates. By ranging `arg1` from `1` to `150` we can produce all the required simulations results (where the first 50 implement the nHDP, the second 50 implement the adjusted k-means and the last 50 implement the nDP).
+In our simulation we fixed the cluster separation to a moderate level (fixing `arg3` to `2`), we considered the number of low resolution units to range between 10, 25 and 50 (respectively fixing `arg4` to `1`, `2` and `3`), and we considered the number of units to range between 10, and 50 (respectively fixing `arg2` to `2`, and `4`). Moreover, we considered three methods (the nHDP, the multi-resolution adaptation of k-means, and the nDP) and 50 data replicates. By ranging `arg1` from `1` to `150` we can produce all the required simulations results (where the first 50 implement the nHDP, the second 50 implement the adjusted k-means and the last 50 implement the nDP).
 The same can be achieved by manually setting the arguments manually, or ranging them using RStudio jobs.
 
-Using the script `simpledata_compile.R` we combined the output and results from all these simulation configurations, and saved the produced summaries in `results/summaries`.
+Using the script `simplepart_compile.R` we combined the output and results from all these simulation configurations, and saved the produced summaries in `results/summaries`.
 
 Finally, with `simplepart_plot.R` we produce the plots reported in the paper using the saved summaries. Since the compiled summaries have been saved in `results/summaries`, this script can be run without having to replicate the full simulation analysis.
 
@@ -39,4 +39,8 @@ Finally, with `modeldata_plot.R` we produce the plots reported in the paper usin
 
 ## westphilly
 
-**TODO**
+The data, made available from the Philadelphia Police Department, has been collected, cleaned and combined in ..., by combining the violent crime data with the area of each neighborhood, to create the crime density measure. This is then restricted to the West Philadelphia area.
+
+The analysis of this data is carried out with `westphilly_analysis.R`, setting the parameter `TASK` equal to 1 and 2, to run the two MCMC chains.
+
+The results are then analysed and plotted in `westphilly_plot.R`.
