@@ -37,6 +37,7 @@ opt_nct <- as.numeric(new_args[4])
 cat(sim_number, "\n")
 cat(opt_m, "\n")
 cat(opt_dist, "\n")
+cat(opt_nct, "\n")
 cat(method, "\n")
 
 dists <- c(2, 2.5, 3, 4)

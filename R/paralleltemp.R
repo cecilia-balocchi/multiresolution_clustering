@@ -10,6 +10,45 @@ paralleltemp <- function(Y, YLR = NULL, Mapping, InvMapping, n, n2, burnin, adju
                      etaLR_bool = TRUE, etaCT_bool = TRUE, etaTD_bool = TRUE,
                      gammaLR_init = NULL, gammaHR_init = NULL,
                      alpha1 = 1.0, alpha2 = NULL){
+  #' Run the nHDP MCMC algorithm using parallel tempering
+  #' 
+  #' @param Y A vector of high resolution data to be partitioned. Each observation corresponds to a HR unit.
+  #' @param YLR A vector of low resolution data to be partitioned. Not required for the clustering to work. Each observation corresponds to a LR unit. If provided, a second likelihood term will be considered for the LR data, and it will be weighted using alpha2.
+  #' @param Mapping A two column array where each row corresponds to (i_HR, i_LR), where i_HR is the index of a HR unit and i_LR is the index of the LR unit in which the former is contained. Should be 0-indexed.  
+  #' @param InvMapping A two column array where the j-th row corresponds to (r_HR, j_LR), where r_HR corresponds to the row of Mapping such that Mapping[r_HR,1] = j, and j_LR is the index of the LR unit containing i.
+  #' @param n An integer, specifying the length of Y, i.e. the number of high resolution units
+  #' @param n2 An integer, specifying the length of YLR, i.e. the number of low resolution units
+  #' @param burnin An integer, specifying how many initial MCMC samples should be discarded as burn-in
+  #' @param adjust Discarded, should be equal to zero.
+  #' @param save An integer, specifying how many MCMC iterations should be run and saved after the burn-in stage.
+  #' @param gibbs An integer, specifying how many gibbs iteration should be performed for the Split-Merge Metropolis Hasting proposal
+  #' @param nchains An integer, specifying how many chains should be ran for the parallel tempering algorithm.
+  #' @param temps A vector of nchains positive temperatures (greater 0 and less than or equal than 1) for the parallel tempering algorithm. Should be ordered to be increasing.
+  #' @param print_bool A boolean, specifying if additional messages should be printed. Default is FALSE.
+  #' @param sampleLR_bool A boolean, specifying if the LR partition should be sampled or fixed. Default is TRUE (should be sampled).
+  #' @param sampleHR_bool A boolean, specifying if the HR partition should be sampled or fixed. Default is TRUE (should be sampled).
+  #' @param one_vs_manyLR_bool A boolean, specifying if the LR partition should be initialized with one cluster (TRUE) or n2 clusters (FALSE). Default is TRUE.
+  #' @param one_vs_manyHR_bool A boolean, specifying if the HR partition should be initialized with one cluster (TRUE) or n2 clusters (FALSE). Default is TRUE.
+  #' @param eta_LR A positive number, specifying the concentration hyper-parameter for the DP prior distribution on the LR parition. Default is 1.
+  #' @param eta_CT A positive number, specifying the concentration hyper-parameter for the HDP prior distribution on the HR parition. CT stands for 'costumers-tables', i.e. the first level of the HDP distribution. Default is 1.
+  #' @param eta_TD A positive number, specifying the concentration hyper-parameter for the HDP prior distribution on the HR parition. TD stands for 'tables-dishes', i.e. the second level of the HDP distribution. Default is 1.
+  #' @param kH A positive number, specifying a hyper-parameter for the base measure of the nHDP, i.e. k_0 in equation (1) of the paper. Default is 0.1.
+  #' @param alphaH A positive number, specifying the first hyper-parameter for the Inv-Gamma prior on sigma^2, i.e. beta_0 in equation (1) of the paper. Default is 1.
+  #' @param betaH A positive number, specifying the second hyper-parameter for the Inv-Gamma prior on sigma^2, i.e. beta_1 in equation (1) of the paper. Default is 1.
+  #' @param kL Discarded. A positive number, specifying a hyper-parameter for the low resolution base measure of the nHDP, when YLR is provided. Default is 0.1.
+  #' @param alphaL Discarded. A positive number, specifying the first hyper-parameter for the  Inv-Gamma prior on the low resolution sigma^2, when YLR is provided. Default is 1.
+  #' @param betaL Discarded. A positive number, specifying the second hyper-parameter for the  Inv-Gamma prior on the low resolution sigma^2, when YLR is provided. Default is 1.
+  #' @param seed A positive number, specifying the seed to run the algorith. Default is NULL.
+  #' @param grid_eta A vector of positive numbers. The grid of values among which the various eta hyper-parameters should be sampled. Default is NULL. If not provided, the eta hyper-parameters are considered fixed.
+  #' @param prior_eta A vector of prior probabilities assigned to each value of grid_eta (length of grid_eta should be equal to length of prior_eta).
+  #' @param etaLR_bool A boolean, specifying if eta_LR should be sampled.
+  #' @param etaCT_bool A boolean, specifying if eta_CT should be sampled.
+  #' @param etaTD_bool A boolean, specifying if eta_TD should be sampled.
+  #' @param gammaLR_init A vector of n2 positive integers, specifying the cluster assignemnts of a custom partition, with which to initialize the low resolution partition.
+  #' @param gammaHR_init A vector of n positive integers, specifying the cluster assignemnts of a custom partition, with which to initialize the high resolution partition.
+  #' @param alpha1 A positive number between 0 and 1, to weight (temper) the high resolution data likelihood. Default is 1. Can be speficied if low resolution data is provided.
+  #' @param alpha2 Discarded. A positive number between 0 and 1, to weight (temper) the low resolution data likelihood. Default is NULL. Can be speficied if low resolution data is provided.
+
   if(is.null(grid_eta)){
     # if not specified, it means we do not want to sample eta, then we choose a grid with one value only
     grid_eta = 1
